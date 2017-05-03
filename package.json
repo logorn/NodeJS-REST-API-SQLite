@@ -1,0 +1,11 @@
+{
+  "name": "html5-indexeddb-nodejs",
+  "version": "0.1.0",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "ejs": "~1.0.0",
+    "express": "~4.10.1",
+    "sqlite": "^2.5.0",
+    "bluebird": "*"
+  }
+}
