@@ -1,5 +1,5 @@
 {
-  "name": "html5-indexeddb-nodejs",
+  "name": "nodejs-rest-api-sqlite",
   "version": "0.1.0",
   "dependencies": {
     "body-parser": "^1.17.1",
