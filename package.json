@@ -1,11 +1,18 @@
 {
   "name": "nodejs-rest-api-sqlite",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "POC - NodeJS REST API using SQLite as a database.",
+  "author": "Romuald Tuffreau https://github.com/romwaldtff",
   "dependencies": {
-    "body-parser": "^1.17.1",
-    "ejs": "~1.0.0",
-    "express": "~4.10.1",
-    "sqlite": "^2.5.0",
+    "body-parser": "*",
+    "ejs": "*",
+    "express": "*",
+    "sqlite": "*",
     "bluebird": "*"
-  }
+  },
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/romwaldtff/NodeJS-REST-API-SQLite/issues"
+  },
+  "repository": "https://github.com/romwaldtff/NodeJS-REST-API-SQLite"
 }

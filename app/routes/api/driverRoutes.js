@@ -25,7 +25,7 @@ router.get('/', function (req, res) {
     driverController.findAll(res);
 });
 
-router.put('/', function (req, res) {
+router.put('/:id', function (req, res) {
     driverController.update(req, res)
 });
 

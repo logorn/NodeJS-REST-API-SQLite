@@ -90,6 +90,24 @@ class CarDao {
     };
 
     /**
+     * Creates the given entity with a provided id in the database
+     * @params Car
+     * returns database insertion status
+     */
+    createWithId(Car) {
+        let sqlRequest = "INSERT into car (id, maker, model, year, driver) " +
+            "VALUES ($id, $maker, $model, $year, $driver)";
+        let sqlParams = {
+            $id: Car.id,
+            $maker: Car.maker,
+            $model: Car.model,
+            $year: Car.year,
+            $driver: Car.driver
+        };
+        return this.common.run(sqlRequest, sqlParams);
+    };
+
+    /**
      * Deletes an entity using its Id / Primary Key
      * @params id
      * returns database deletion status

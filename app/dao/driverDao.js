@@ -78,8 +78,24 @@ class DriverDao {
     create(Driver) {
         let sqlRequest = "INSERT into driver (firstName, lastName, car) " +
             "VALUES ($firstName, $lastName, $car)";
-
         let sqlParams = {
+            $firstName: Driver.firstName,
+            $lastName: Driver.lastName,
+            $car: Driver.car
+        };
+        return this.common.run(sqlRequest, sqlParams);
+    };
+
+    /**
+     * Creates the given entity with a provided in the database
+     * @params Driver
+     * returns database insertion status
+     */
+    createWithId(Driver) {
+        let sqlRequest = "INSERT into driver (id, firstName, lastName, car) " +
+            "VALUES ($id, $firstName, $lastName, $car)";
+        let sqlParams = {
+            $id: Driver.id,
             $firstName: Driver.firstName,
             $lastName: Driver.lastName,
             $car: Driver.car

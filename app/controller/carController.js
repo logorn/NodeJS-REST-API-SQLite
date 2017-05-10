@@ -2,7 +2,7 @@
 const CarDao = require('../dao/carDao');
 
 /* Load Controller Common function */
-const controllerCommon = require('./common/controllerCommon');
+const ControllerCommon = require('./common/controllerCommon');
 
 /* Load Car entity */
 const Car = require('../model/car');
@@ -14,7 +14,7 @@ class CarController {
 
     constructor() {
         this.carDao = new CarDao();
-        this.common = new controllerCommon();
+        this.common = new ControllerCommon();
     }
 
     /**
@@ -24,15 +24,10 @@ class CarController {
      */
     findById(req, res) {
         let id = req.params.id;
-        let _self = this;
 
         this.carDao.findById(id)
-            .then(function (result) {
-                _self.common.findSuccess(result, res);
-            })
-            .catch(function (error) {
-                _self.common.findError(error, res);
-            });
+            .then(this.common.findSuccess(res))
+            .catch(this.common.findError(res));
     };
 
     /**
@@ -40,15 +35,9 @@ class CarController {
      * @return all entities
      */
     findAll(res) {
-        let _self = this;
-
         this.carDao.findAll()
-            .then(function (results) {
-                _self.common.findSuccess(results, res);
-            })
-            .catch(function (error) {
-                _self.common.findError(error, res);
-            });
+            .then(this.common.findSuccess(res))
+            .catch(this.common.findError(res));
     };
 
     /**
@@ -56,15 +45,10 @@ class CarController {
      * @return count
      */
     countAll(res) {
-        let _self = this;
 
         this.carDao.countAll()
-            .then(function (result) {
-                _self.common.findSuccess(result, res);
-            })
-            .catch(function (error) {
-                _self.common.serverError(error, res);
-            });
+            .then(this.common.findSuccess(res))
+            .catch(this.common.serverError(res));
     };
 
     /**
@@ -73,16 +57,16 @@ class CarController {
      * @return true if the entity has been updated, false if not found and not updated
      */
     update(req, res) {
-        let _self = this;
-        let car = new Car(req.body.id, req.body.maker, req.body.model, req.body.year, req.body.driver);
+        let car = new Car();
+        car.id = req.body.id;
+        car.maker = req.body.maker;
+        car.model = req.body.model;
+        car.year = req.body.year;
+        car.driver = req.body.driver;
 
         return this.carDao.update(car)
-            .then(function () {
-                _self.common.editSuccess(res);
-            })
-            .catch(function (error) {
-                _self.common.serverError(error, res);
-            });
+            .then(this.common.editSuccess(res))
+            .catch(this.common.serverError(res));
     };
 
     /**
@@ -91,16 +75,26 @@ class CarController {
      * returns database insertion status
      */
     create(req, res) {
-        let _self = this;
-        let car = new Car(0, req.body.maker, req.body.model, req.body.year, req.body.driver);
+        let car = new Car();
+        if (req.body.id) {
+            car.id = req.body.id;
+        }
+        car.maker = req.body.maker;
+        car.model = req.body.model;
+        car.year = req.body.year;
+        car.driver = req.body.driver;
 
-        return this.carDao.create(car)
-            .then(function () {
-                _self.common.editSuccess(res);
-            })
-            .catch(function (error) {
-                _self.common.serverError(error, res);
-            });
+        if (req.body.id) {
+            return this.carDao.createWithId(car)
+                .then(this.common.editSuccess(res))
+                .catch(this.common.serverError(res));
+        }
+        else {
+            return this.carDao.create(car)
+                .then(this.common.editSuccess(res))
+                .catch(this.common.serverError(res));
+        }
+
     };
 
     /**
@@ -109,16 +103,11 @@ class CarController {
      * returns database deletion status
      */
     deleteById(req, res) {
-        let _self = this;
         let id = req.params.id;
 
         this.carDao.deleteById(id)
-            .then(function () {
-                _self.common.editSuccess(res);
-            })
-            .catch(function (error) {
-                _self.common.serverError(error, res);
-            });
+            .then(this.common.editSuccess(res))
+            .catch(this.common.serverError(res));
     };
 
     /**
@@ -127,16 +116,11 @@ class CarController {
      * @return
      */
     exists(req, res) {
-        let _self = this;
         let id = req.params.id;
 
         this.carDao.exists(id)
-            .then(function () {
-                _self.common.existsSuccess(res);
-            })
-            .catch(function (error) {
-                _self.common.findError(error, res);
-            });
+            .then(this.common.existsSuccess(res))
+            .catch(this.common.findError(res));
     };
 }
 

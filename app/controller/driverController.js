@@ -24,15 +24,9 @@ class DriverController {
      */
     findById(req, res) {
         let id = req.params.id;
-        let _self = this;
-
         this.driverDao.findById(id)
-            .then(function (result) {
-                _self.common.findSuccess(result, res);
-            })
-            .catch(function (error) {
-                _self.common.findError(error, res);
-            });
+            .then(this.common.findSuccess(res))
+            .catch(this.common.findError(res));
     };
 
     /**
@@ -40,15 +34,9 @@ class DriverController {
      * @return all entities
      */
     findAll(res) {
-        let _self = this;
-
         this.driverDao.findAll()
-            .then(function (results) {
-                _self.common.findSuccess(results, res);
-            })
-            .catch(function (error) {
-                _self.common.findError(error, res);
-            });
+            .then(this.common.findSuccess(res))
+            .catch(this.common.findError(res));
     };
 
     /**
@@ -56,15 +44,9 @@ class DriverController {
      * @return count
      */
     countAll(res) {
-        let _self = this;
-
         this.driverDao.countAll()
-            .then(function (result) {
-                _self.common.findSuccess(result, res);
-            })
-            .catch(function (error) {
-                _self.common.serverError(error, res);
-            });
+            .then(this.common.findSuccess(res))
+            .catch(this.common.serverError(res));
     };
 
     /**
@@ -73,16 +55,15 @@ class DriverController {
      * @return true if the entity has been updated, false if not found and not updated
      */
     update(req, res) {
-        let driver = new Driver(req.body.id, req.body.firstName, req.body.lastName, req.body.car);
-        let _self = this;
+        let driver = new Driver();
+        driver.id = req.body.id;
+        driver.firstName = req.body.firstName;
+        driver.lastName = req.body.lastName;
+        driver.car = req.body.car;
 
         return this.driverDao.update(driver)
-            .then(function () {
-                _self.common.editSuccess(res);
-            })
-            .catch(function (error) {
-                _self.common.serverError(error, res);
-            });
+            .then(this.common.editSuccess(res))
+            .catch(this.common.serverError(res));
     };
 
     /**
@@ -91,16 +72,24 @@ class DriverController {
      * returns database insertion status
      */
     create(req, res) {
-        let driver = new Driver(0, req.body.firstName, req.body.lastName, req.body.car);
-        let _self = this;
+        let driver = new Driver();
+        if (req.body.id) {
+            driver.id = req.body.id;
+        }
+        driver.firstName = req.body.firstName;
+        driver.lastName = req.body.lastName;
+        driver.car = req.body.car;
 
-        return this.driverDao.create(driver)
-            .then(function () {
-                _self.common.editSuccess(res);
-            })
-            .catch(function (error) {
-                _self.common.serverError(error, res);
-            });
+        if (req.body.id) {
+            return this.driverDao.createWithId(driver)
+                .then(this.common.editSuccess(res))
+                .catch(this.common.serverError(res));
+        }
+        else {
+            return this.driverDao.create(driver)
+                .then(this.common.editSuccess(res))
+                .catch(this.common.serverError(res));
+        }
     };
 
     /**
@@ -110,15 +99,10 @@ class DriverController {
      */
     deleteById(req, res) {
         let id = req.params.id;
-        let _self = this;
 
         this.driverDao.deleteById(id)
-            .then(function () {
-                _self.common.editSuccess(res);
-            })
-            .catch(function (error) {
-                _self.common.serverError(error, res);
-            });
+            .then(this.common.editSuccess(res))
+            .catch(this.common.serverError(res));
     };
 
     /**
@@ -128,15 +112,10 @@ class DriverController {
      */
     exists(req, res) {
         let id = req.params.id;
-        let _self = this;
 
         this.driverDao.exists(id)
-            .then(function () {
-                _self.common.existsSuccess(res);
-            })
-            .catch(function (error) {
-                _self.common.findError(error, res);
-            });
+            .then(this.common.existsSuccess(res))
+            .catch(this.common.findError(res));
     };
 }
 

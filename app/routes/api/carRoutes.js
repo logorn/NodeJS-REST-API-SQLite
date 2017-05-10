@@ -25,7 +25,7 @@ router.get('/', function (req, res) {
     carController.findAll(res);
 });
 
-router.put('/', function (req, res) {
+router.put('/:id', function (req, res) {
     carController.update(req, res);
 });
 
